@@ -13,4 +13,4 @@ if ~exist(imgDir, 'dir')
 	error( imgDir + 'does not exist!' );
 end
 
-images = dir( fullfile(imgDir, '*.j*g' ) ); 
+images = dir( fullfile(imgDir, '*.p*g' ) ); 

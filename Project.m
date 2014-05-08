@@ -21,13 +21,13 @@ else
     Images = GetImageList( imageDir );
     
     % We are only training on one situation, so lets decide what that is
-    cat = 'reading';
+    cat = 'croquet';
     class = zeros( size(Images) );
     for i = 1:size(Images, 1)
         if ~isempty( strfind( Images(i).name, cat ) )
             class(i,1) = 1;
         else
-            class(i,1) = 0;
+            class(i,1) = -1;
         end
     end
     % Now we have to get the image features of each image
@@ -48,25 +48,37 @@ else
 end
 
 %% Separate into training and test data
-for i = 1:(size(data,2) - 1)
-    [data(:,i), a, b] = normalize(data(:,i));
-end
-[trainSet, testSet] = divideset( data, 0.5, 0.5 );
+class = data(:,end);
+data = data(:,1:4000);
+data = [data,class];
+
 
 while 1
     fprintf( '1) Baseline\n' );
-    fprintf( '2) Quit\n' );
+    fprintf( '2) SVM\n' );
+    fprintf( '3) AdaBoost\n' );
+    fprintf( '4) \n' );
+    fprintf( '9) Quit\n' );
     fprintf( '\n' );
     sel = input( 'Select algorithm: ' );
     switch sel
         case 1
-            [testRes, tTrain, tTest] = baselineAlg( trainSet, testSet );
+            [testRes, tTrain, tTest, testSet] = baselineAlg( data );
             baseConfMat = confusionmat( testSet(:,end), testRes);
             disp( baseConfMat );
             fprintf( 'Correct: %3.3f\n', 100*(baseConfMat(1,1)+baseConfMat(2,2))/sum(sum(baseConfMat)));
             fprintf( 'Wrong: %3.3f\n\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
         case 2
+            [testRes, tTrain, tTest, testSet] = svmAlg( data );
+            baseConfMat = confusionmat( testSet(:,end), testRes);
+            disp( baseConfMat );
+            fprintf( 'Correct: %3.3f\n', 100*(baseConfMat(1,1)+baseConfMat(2,2))/sum(sum(baseConfMat)));
+            fprintf( 'Wrong: %3.3f\n\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
+        case 3
+        case 4
+        case 9
             break;
+        otherwise
     end
 end
 

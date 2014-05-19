@@ -19,10 +19,8 @@ if ndims(img) == 3
 end
 [w, h] = size(img);
 mDim= max([w,h]);
-s = 128 / mDim;
 img = imresize( img, [128 128] );
 
-cellSize = 16;
 surf = detectSURFFeatures(img,'MetricThreshold',600);
 [featureVector, featurePoints] = extractFeatures( img, surf);
 %hog = vl_hog( single(img), cellSize, 'numOrientations', 8 , 'variant', 'dalaltriggs','bilinearOrientations');

@@ -57,26 +57,34 @@ while 1
     fprintf( '1) Baseline\n' );
     fprintf( '2) SVM\n' );
     fprintf( '3) AdaBoost\n' );
-    fprintf( '4) \n' );
-    fprintf( '9) Quit\n' );
+    fprintf( '4) K Nearest Neighbor\n\n' );
+    fprintf( '0) Quit\n' );
     fprintf( '\n' );
     sel = input( 'Select algorithm: ' );
     switch sel
         case 1
-            [testRes, tTrain, tTest, testSet] = baselineAlg( data );
+            [testSet, testRes, tTest, tTrain] = baselineAlg( data );
             baseConfMat = confusionmat( testSet(:,end), testRes);
             disp( baseConfMat );
             fprintf( 'Correct: %3.3f\n', 100*(baseConfMat(1,1)+baseConfMat(2,2))/sum(sum(baseConfMat)));
-            fprintf( 'Wrong: %3.3f\n\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
+            fprintf( 'Wrong: %3.3f\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
+            fprintf( 'tTrain: %3.4f\ntTest: %3.4f\n\n', tTrain, tTest);
         case 2
-            [testRes, tTrain, tTest, testSet] = svmAlg( data );
+            [testSet, testRes, tTest, tTrain] = svmAlg( data );
             baseConfMat = confusionmat( testSet(:,end), testRes);
             disp( baseConfMat );
             fprintf( 'Correct: %3.3f\n', 100*(baseConfMat(1,1)+baseConfMat(2,2))/sum(sum(baseConfMat)));
-            fprintf( 'Wrong: %3.3f\n\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
+            fprintf( 'Wrong: %3.3f\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
+            fprintf( 'tTrain: %3.4f\ntTest: %3.4f\n\n', tTrain, tTest);
         case 3
         case 4
-        case 9
+            [testSet, testRes, tTest, tTrain] = knnAlg( data );
+            baseConfMat = confusionmat( testSet(:,end), testRes);
+            disp( baseConfMat );
+            fprintf( 'Correct: %3.3f\n', 100*(baseConfMat(1,1)+baseConfMat(2,2))/sum(sum(baseConfMat)));
+            fprintf( 'Wrong: %3.3f\n', 100*(baseConfMat(1,2)+baseConfMat(2,1))/sum(sum(baseConfMat)));
+            fprintf( 'tTrain: %3.4f\ntTest: %3.4f\n\n', tTrain, tTest);
+        case 0
             break;
         otherwise
     end
